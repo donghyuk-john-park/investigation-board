@@ -11,3 +11,9 @@ Pre-built templates for common thesis types (Geopolitical, Macro/Rates, Earnings
 - **Effort:** S (human: ~2 hours / CC: ~15 min)
 - **Depends on:** Core assumption creation flow
 - **Context:** Deferred from CEO review (2026-04-05). Static JSON templates + UI selector on assumption creation form. Start with 5 categories, each with 4-6 suggested invalidation conditions.
+
+## P3: QuickAddEvidence error positioning
+Fix the absolute-positioned error message in `src/components/QuickAddEvidence.tsx:82`. The `mt-12` hardcoded margin may cause misalignment on different viewport sizes. Replace with a relative-positioned error below the form, or use a flex layout.
+- **Severity:** Low / Visual
+- **Found by:** /qa on main (2026-04-05)
+- **Report:** .gstack/qa-reports/qa-report-localhost-2026-04-05.md

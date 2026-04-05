@@ -34,9 +34,18 @@ export default function NewAssumption() {
         }),
       });
 
-      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) {
+          setAiError("sign-in-required");
+        } else {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Failed to create assumption");
+        }
+        setAiProcessing(false);
+        return;
+      }
 
-      if (!res.ok) throw new Error(data.error);
+      const data = await res.json();
 
       // Redirect to the new assumption's detail page
       router.push(`/assumptions/${data.assumption.id}`);
@@ -70,8 +79,17 @@ export default function NewAssumption() {
         }),
       });
 
+      if (!res.ok) {
+        if (res.status === 401) {
+          setAiError("sign-in-required");
+        } else {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Failed to save assumption");
+        }
+        setLoading(false);
+        return;
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
       router.push(`/assumptions/${data.assumption.id}`);
     } catch (err) {
       setAiError((err as Error).message);
@@ -133,7 +151,19 @@ export default function NewAssumption() {
           </button>
         </div>
         {aiError && (
-          <p className="mt-2 text-xs text-red-400">{aiError}</p>
+          <p className="mt-2 text-xs text-red-400">
+            {aiError === "sign-in-required" ? (
+              <>
+                You need to{" "}
+                <a href="/auth/login" className="text-indigo-400 underline hover:text-indigo-300">
+                  sign in
+                </a>{" "}
+                before creating assumptions.
+              </>
+            ) : (
+              aiError
+            )}
+          </p>
         )}
       </div>
 
@@ -185,6 +215,7 @@ export default function NewAssumption() {
                 value={condition}
                 onChange={(e) => updateCondition(i, e.target.value)}
                 placeholder={`Condition ${i + 1}: what would prove this wrong?`}
+                aria-label={`Invalidation condition ${i + 1}`}
                 className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
               />
               {invalidationConditions.length > 1 && (
@@ -230,6 +261,21 @@ export default function NewAssumption() {
         >
           {loading ? "Saving..." : "Save Assumption"}
         </button>
+        {aiError && (
+          <p className="mt-2 text-xs text-red-400">
+            {aiError === "sign-in-required" ? (
+              <>
+                You need to{" "}
+                <a href="/auth/login" className="text-indigo-400 underline hover:text-indigo-300">
+                  sign in
+                </a>{" "}
+                before creating assumptions.
+              </>
+            ) : (
+              aiError
+            )}
+          </p>
+        )}
       </div>
     </div>
   );

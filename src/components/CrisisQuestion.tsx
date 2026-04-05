@@ -20,6 +20,7 @@ export default function CrisisQuestion({
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function submitReview(
     outcome: "intact" | "invalidated" | "unclear",
@@ -27,8 +28,9 @@ export default function CrisisQuestion({
     reviewNotes?: string
   ) {
     setLoading(true);
+    setError(null);
     try {
-      await fetch("/api/review", {
+      const res = await fetch("/api/review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -38,6 +40,11 @@ export default function CrisisQuestion({
           notes: reviewNotes || null,
         }),
       });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to save review");
+      }
 
       if (outcome === "intact") {
         setResult(
@@ -49,6 +56,8 @@ export default function CrisisQuestion({
         setResult("Review logged as unclear. Add more evidence to resolve.");
       }
       setStep("done");
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setLoading(false);
     }
@@ -93,6 +102,7 @@ export default function CrisisQuestion({
             <span className="text-sm text-gray-300">{condition}</span>
           </label>
         ))}
+        {error && <p className="text-xs text-red-400">{error}</p>}
         <button
           onClick={() =>
             selectedCondition !== null &&
@@ -136,6 +146,7 @@ export default function CrisisQuestion({
       <p className="text-lg font-medium text-gray-200">
         Has any of your invalidation conditions actually been met?
       </p>
+      {error && <p className="text-xs text-red-400">{error}</p>}
       <div className="flex gap-3 justify-center">
         <button
           onClick={() => submitReview("intact")}

@@ -1,0 +1,23 @@
+{
+  "date": "2026-04-05",
+  "url": "http://localhost:3000",
+  "healthScore": 100,
+  "baselineHealthScore": 92,
+  "issues": [
+    { "id": "ISSUE-001", "title": "Invalidation condition inputs missing from a11y tree", "severity": "medium", "category": "accessibility", "status": "verified" },
+    { "id": "ISSUE-002", "title": "Unauthenticated form shows generic error on submit", "severity": "medium", "category": "ux", "status": "verified" },
+    { "id": "ISSUE-003", "title": "CrisisQuestion review swallows API errors", "severity": "medium", "category": "functional", "status": "best-effort" },
+    { "id": "ISSUE-004", "title": "QuickAddEvidence error uses absolute positioning", "severity": "low", "category": "visual", "status": "deferred" },
+    { "id": "ISSUE-005", "title": "Review page shows creation date as invalidation date", "severity": "medium", "category": "content", "status": "verified" }
+  ],
+  "categoryScores": {
+    "console": 100,
+    "links": 100,
+    "visual": 97,
+    "functional": 100,
+    "ux": 100,
+    "content": 100,
+    "performance": 100,
+    "accessibility": 100
+  }
+}

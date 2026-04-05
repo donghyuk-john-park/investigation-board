@@ -1,0 +1,42 @@
+{
+  "date": "2026-04-05",
+  "window": "7d",
+  "metrics": {
+    "commits": 4,
+    "contributors": 1,
+    "prs_merged": 0,
+    "insertions": 11621,
+    "deletions": 236,
+    "net_loc": 11385,
+    "test_loc": 0,
+    "test_ratio": 0.0,
+    "active_days": 1,
+    "sessions": 1,
+    "deep_sessions": 1,
+    "avg_session_minutes": 48,
+    "loc_per_session_hour": 14000,
+    "feat_pct": 0.25,
+    "fix_pct": 0.25,
+    "peak_hour": 14,
+    "ai_assisted_commits": 1
+  },
+  "authors": {
+    "donghyuk-john-park": {
+      "commits": 4,
+      "insertions": 11621,
+      "deletions": 236,
+      "test_ratio": 0.0,
+      "top_area": "src/app/"
+    }
+  },
+  "version_range": ["0.0.0", "0.0.0"],
+  "streak_days": 1,
+  "tweetable": "Week of Apr 5: 4 commits (1 contributor), 11.6k LOC, 0% tests, 100% AI-assisted | Streak: 1d",
+  "backlog": {
+    "total_open": 2,
+    "p0_p1": 0,
+    "p2": 1,
+    "completed_this_period": 0,
+    "added_this_period": 2
+  }
+}
