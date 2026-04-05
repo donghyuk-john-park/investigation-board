@@ -34,17 +34,18 @@ export default function NewAssumption() {
         }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
         if (res.status === 401) {
           setAiError("sign-in-required");
         } else {
-          throw new Error(data.error);
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Failed to create assumption");
         }
         setAiProcessing(false);
         return;
       }
+
+      const data = await res.json();
 
       // Redirect to the new assumption's detail page
       router.push(`/assumptions/${data.assumption.id}`);
@@ -78,16 +79,17 @@ export default function NewAssumption() {
         }),
       });
 
-      const data = await res.json();
       if (!res.ok) {
         if (res.status === 401) {
           setAiError("sign-in-required");
         } else {
-          throw new Error(data.error);
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Failed to save assumption");
         }
         setLoading(false);
         return;
       }
+      const data = await res.json();
       router.push(`/assumptions/${data.assumption.id}`);
     } catch (err) {
       setAiError((err as Error).message);
