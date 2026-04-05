@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Gnosis",
   description: "Assumption management for thesis-driven investors",
   manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
