@@ -36,7 +36,15 @@ export default function NewAssumption() {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        if (res.status === 401) {
+          setAiError("sign-in-required");
+        } else {
+          throw new Error(data.error);
+        }
+        setAiProcessing(false);
+        return;
+      }
 
       // Redirect to the new assumption's detail page
       router.push(`/assumptions/${data.assumption.id}`);
@@ -71,7 +79,15 @@ export default function NewAssumption() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        if (res.status === 401) {
+          setAiError("sign-in-required");
+        } else {
+          throw new Error(data.error);
+        }
+        setLoading(false);
+        return;
+      }
       router.push(`/assumptions/${data.assumption.id}`);
     } catch (err) {
       setAiError((err as Error).message);
@@ -133,7 +149,19 @@ export default function NewAssumption() {
           </button>
         </div>
         {aiError && (
-          <p className="mt-2 text-xs text-red-400">{aiError}</p>
+          <p className="mt-2 text-xs text-red-400">
+            {aiError === "sign-in-required" ? (
+              <>
+                You need to{" "}
+                <a href="/auth/login" className="text-indigo-400 underline hover:text-indigo-300">
+                  sign in
+                </a>{" "}
+                before creating assumptions.
+              </>
+            ) : (
+              aiError
+            )}
+          </p>
         )}
       </div>
 
@@ -231,6 +259,21 @@ export default function NewAssumption() {
         >
           {loading ? "Saving..." : "Save Assumption"}
         </button>
+        {aiError && (
+          <p className="mt-2 text-xs text-red-400">
+            {aiError === "sign-in-required" ? (
+              <>
+                You need to{" "}
+                <a href="/auth/login" className="text-indigo-400 underline hover:text-indigo-300">
+                  sign in
+                </a>{" "}
+                before creating assumptions.
+              </>
+            ) : (
+              aiError
+            )}
+          </p>
+        )}
       </div>
     </div>
   );
