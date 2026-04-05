@@ -185,6 +185,7 @@ export default function NewAssumption() {
                 value={condition}
                 onChange={(e) => updateCondition(i, e.target.value)}
                 placeholder={`Condition ${i + 1}: what would prove this wrong?`}
+                aria-label={`Invalidation condition ${i + 1}`}
                 className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
               />
               {invalidationConditions.length > 1 && (
