@@ -65,8 +65,7 @@ export default function CrisisReview() {
     return (
       <div className="text-center py-16">
         <p className="text-gray-400 mb-4">
-          This thesis was invalidated on{" "}
-          {new Date(assumption.created_at).toLocaleDateString()}.
+          This thesis has been invalidated.
         </p>
         <button
           onClick={() => router.push(`/assumptions/${id}`)}
