@@ -1,0 +1,30 @@
+{
+  "name": "Gnosis",
+  "short_name": "Gnosis",
+  "description": "Investment assumption management — the circuit breaker for thesis-driven investors",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "share_target": {
+    "action": "/assumptions/new",
+    "method": "GET",
+    "params": {
+      "url": "shared_url",
+      "text": "shared_text",
+      "title": "shared_title"
+    }
+  }
+}
