@@ -43,10 +43,10 @@ export async function POST(request: NextRequest) {
     structured = await structureAssumption(raw_input);
   } catch (err) {
     if (!hasManualFields) {
-      // AI-only path with no manual fallback — surface the actual error
+      const isUserError = (err as Error).name === "NoThesisError";
       return NextResponse.json(
         { error: (err as Error).message || "AI structuring failed" },
-        { status: 502 }
+        { status: isUserError ? 422 : 502 }
       );
     }
     // Manual fields available — fall back gracefully

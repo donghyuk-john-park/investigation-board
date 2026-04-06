@@ -46,7 +46,9 @@ Return valid JSON only.`,
 
   const parsed = JSON.parse(content);
   if (parsed.error === "no_thesis") {
-    throw new Error(parsed.message || "No thesis detected in input");
+    const err = new Error(parsed.message || "No thesis detected in input");
+    err.name = "NoThesisError";
+    throw err;
   }
 
   // Validate LLM output shape before returning

@@ -63,6 +63,19 @@ describe("POST /api/assumptions", () => {
     expect(body.error).toBe("Incorrect API key provided");
   });
 
+  it("returns 422 when AI detects no thesis in input", async () => {
+    const err = new Error("Could not identify an investment thesis in this text.");
+    err.name = "NoThesisError";
+    mockStructureAssumption.mockRejectedValue(err);
+
+    const req = makeRequest({ raw_input: "Hello world" });
+    const res = await POST(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(422);
+    expect(body.error).toContain("Could not identify");
+  });
+
   it("falls back to manual fields when AI fails but manual fields are present", async () => {
     mockStructureAssumption.mockRejectedValue(new Error("API error"));
 
