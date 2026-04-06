@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import "./globals.css";
 
@@ -24,11 +25,16 @@ export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html
       lang="en"
@@ -43,18 +49,22 @@ export default function RootLayout({
             >
               GNOSIS
             </Link>
-            <Link
-              href="/"
-              className="text-sm text-gray-500 hover:text-gray-300 py-2 px-1"
-            >
-              Assumptions
-            </Link>
-            <Link
-              href="/assumptions/new"
-              className="text-sm text-gray-500 hover:text-gray-300 py-2 px-1"
-            >
-              + New
-            </Link>
+            {user && (
+              <>
+                <Link
+                  href="/"
+                  className="text-sm text-gray-500 hover:text-gray-300 py-2 px-1"
+                >
+                  Assumptions
+                </Link>
+                <Link
+                  href="/assumptions/new"
+                  className="text-sm text-gray-500 hover:text-gray-300 py-2 px-1"
+                >
+                  + New
+                </Link>
+              </>
+            )}
           </div>
         </nav>
         <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6">
