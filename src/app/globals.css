@@ -4,3 +4,9 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+
+/* Focus-visible ring for keyboard accessibility */
+*:focus-visible {
+  outline: 2px solid oklch(0.65 0.2 265);
+  outline-offset: 2px;
+}

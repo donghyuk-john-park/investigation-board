@@ -130,7 +130,7 @@ export default function NewAssumption() {
           value={rawInput}
           onChange={(e) => setRawInput(e.target.value)}
           placeholder="Paste anything — an article, a tweet, a rambling thought. AI will structure it into a thesis."
-          className="w-full px-3 py-3 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y min-h-24 focus:border-indigo-500 focus:outline-none"
+          className="w-full px-3 py-3 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y min-h-24 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
           rows={4}
           maxLength={10000}
         />
@@ -140,7 +140,7 @@ export default function NewAssumption() {
             value={assetTags}
             onChange={(e) => setAssetTags(e.target.value)}
             placeholder="Asset tags (optional, comma-separated: CL, XLE, BNO)"
-            className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+            className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
           />
           <button
             onClick={handleAIStructure}
@@ -186,7 +186,7 @@ export default function NewAssumption() {
             onChange={(e) => setBelief(e.target.value)}
             placeholder="One-sentence statement of your belief"
             maxLength={500}
-            className="w-full px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+            className="w-full px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
           />
         </div>
 
@@ -199,7 +199,7 @@ export default function NewAssumption() {
             onChange={(e) => setCausalLogic(e.target.value)}
             placeholder="IF X AND Y THEN Z BECAUSE W"
             maxLength={1000}
-            className="w-full px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y focus:border-indigo-500 focus:outline-none"
+            className="w-full px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
             rows={3}
           />
         </div>
@@ -216,7 +216,7 @@ export default function NewAssumption() {
                 onChange={(e) => updateCondition(i, e.target.value)}
                 placeholder={`Condition ${i + 1}: what would prove this wrong?`}
                 aria-label={`Invalidation condition ${i + 1}`}
-                className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+                className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
               />
               {invalidationConditions.length > 1 && (
                 <button
