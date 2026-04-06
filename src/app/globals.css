@@ -10,3 +10,33 @@
   outline: 2px solid oklch(0.65 0.2 265);
   outline-offset: 2px;
 }
+
+/* Custom range slider for dark theme */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: #1e293b;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #818cf8;
+  border: 2px solid #0f172a;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #818cf8;
+  border: 2px solid #0f172a;
+  cursor: pointer;
+}
