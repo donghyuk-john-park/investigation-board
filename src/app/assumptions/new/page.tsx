@@ -112,6 +112,8 @@ export default function NewAssumption() {
     setInvalidationConditions(invalidationConditions.filter((_, i) => i !== index));
   }
 
+  const canSave = belief.trim() && invalidationConditions.some((c) => c.trim());
+
   return (
     <div>
       <h1 className="text-xl font-semibold text-gray-100 mb-6">
@@ -252,16 +254,12 @@ export default function NewAssumption() {
 
         <button
           onClick={handleManualSave}
-          disabled={
-            loading ||
-            !belief.trim() ||
-            !invalidationConditions.some((c) => c.trim())
-          }
+          disabled={loading || !canSave}
           className="w-full px-4 py-2.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? "Saving..." : "Save Assumption"}
         </button>
-        {!belief.trim() || !invalidationConditions.some((c) => c.trim()) ? (
+        {!canSave ? (
           <p className="text-xs text-gray-600 text-center mt-1">
             Fill in a belief and at least one invalidation condition to save.
           </p>
