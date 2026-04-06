@@ -114,7 +114,7 @@ export default function NewAssumption() {
 
   return (
     <div>
-      <h1 className="text-lg font-semibold text-gray-100 mb-6">
+      <h1 className="text-xl font-semibold text-gray-100 mb-6">
         New Assumption
       </h1>
 
