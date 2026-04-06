@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import "./globals.css";
 
@@ -24,11 +25,20 @@ export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let user = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Auth check failed — default to unauthenticated nav
+  }
+
   return (
     <html
       lang="en"
@@ -39,22 +49,26 @@ export default function RootLayout({
           <div className="max-w-3xl mx-auto flex items-center gap-6">
             <Link
               href="/"
-              className="text-base font-bold text-gray-100 tracking-tight"
+              className="text-base font-bold text-gray-100 tracking-tight py-2"
             >
               GNOSIS
             </Link>
-            <Link
-              href="/"
-              className="text-sm text-gray-500 hover:text-gray-300"
-            >
-              Assumptions
-            </Link>
-            <Link
-              href="/assumptions/new"
-              className="text-sm text-gray-500 hover:text-gray-300"
-            >
-              + New
-            </Link>
+            {user && (
+              <>
+                <Link
+                  href="/"
+                  className="text-sm text-gray-500 hover:text-gray-300 py-2 px-1"
+                >
+                  Assumptions
+                </Link>
+                <Link
+                  href="/assumptions/new"
+                  className="text-sm text-gray-500 hover:text-gray-300 py-2 px-1"
+                >
+                  + New
+                </Link>
+              </>
+            )}
           </div>
         </nav>
         <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6">

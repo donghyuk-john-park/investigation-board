@@ -59,7 +59,7 @@ export default function AssumptionDetail() {
           <Link href="/" className="text-xs text-gray-600 hover:text-gray-400">
             &larr; All assumptions
           </Link>
-          <h1 className="text-lg font-semibold text-gray-100 mt-1">
+          <h1 className="text-xl font-semibold text-gray-100 mt-1">
             {assumption.belief}
           </h1>
           <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">

@@ -112,9 +112,11 @@ export default function NewAssumption() {
     setInvalidationConditions(invalidationConditions.filter((_, i) => i !== index));
   }
 
+  const canSave = belief.trim() && invalidationConditions.some((c) => c.trim());
+
   return (
     <div>
-      <h1 className="text-lg font-semibold text-gray-100 mb-6">
+      <h1 className="text-xl font-semibold text-gray-100 mb-6">
         New Assumption
       </h1>
 
@@ -130,7 +132,7 @@ export default function NewAssumption() {
           value={rawInput}
           onChange={(e) => setRawInput(e.target.value)}
           placeholder="Paste anything — an article, a tweet, a rambling thought. AI will structure it into a thesis."
-          className="w-full px-3 py-3 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y min-h-24 focus:border-indigo-500 focus:outline-none"
+          className="w-full px-3 py-3 text-base bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y min-h-24 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
           rows={4}
           maxLength={10000}
         />
@@ -140,7 +142,7 @@ export default function NewAssumption() {
             value={assetTags}
             onChange={(e) => setAssetTags(e.target.value)}
             placeholder="Asset tags (optional, comma-separated: CL, XLE, BNO)"
-            className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+            className="flex-1 px-3 py-2 text-base bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
           />
           <button
             onClick={handleAIStructure}
@@ -186,7 +188,7 @@ export default function NewAssumption() {
             onChange={(e) => setBelief(e.target.value)}
             placeholder="One-sentence statement of your belief"
             maxLength={500}
-            className="w-full px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+            className="w-full px-3 py-2 text-base bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
           />
         </div>
 
@@ -199,7 +201,7 @@ export default function NewAssumption() {
             onChange={(e) => setCausalLogic(e.target.value)}
             placeholder="IF X AND Y THEN Z BECAUSE W"
             maxLength={1000}
-            className="w-full px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y focus:border-indigo-500 focus:outline-none"
+            className="w-full px-3 py-2 text-base bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 resize-y focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
             rows={3}
           />
         </div>
@@ -216,7 +218,7 @@ export default function NewAssumption() {
                 onChange={(e) => updateCondition(i, e.target.value)}
                 placeholder={`Condition ${i + 1}: what would prove this wrong?`}
                 aria-label={`Invalidation condition ${i + 1}`}
-                className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+                className="flex-1 px-3 py-2 text-base bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
               />
               {invalidationConditions.length > 1 && (
                 <button
@@ -252,15 +254,16 @@ export default function NewAssumption() {
 
         <button
           onClick={handleManualSave}
-          disabled={
-            loading ||
-            !belief.trim() ||
-            !invalidationConditions.some((c) => c.trim())
-          }
+          disabled={loading || !canSave}
           className="w-full px-4 py-2.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? "Saving..." : "Save Assumption"}
         </button>
+        {!canSave ? (
+          <p className="text-xs text-gray-600 text-center mt-1">
+            Fill in a belief and at least one invalidation condition to save.
+          </p>
+        ) : null}
         {aiError && (
           <p className="mt-2 text-xs text-red-400">
             {aiError === "sign-in-required" ? (
