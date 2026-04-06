@@ -261,6 +261,11 @@ export default function NewAssumption() {
         >
           {loading ? "Saving..." : "Save Assumption"}
         </button>
+        {!belief.trim() || !invalidationConditions.some((c) => c.trim()) ? (
+          <p className="text-xs text-gray-600 text-center mt-1">
+            Fill in a belief and at least one invalidation condition to save.
+          </p>
+        ) : null}
         {aiError && (
           <p className="mt-2 text-xs text-red-400">
             {aiError === "sign-in-required" ? (
