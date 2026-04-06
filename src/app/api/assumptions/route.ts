@@ -37,11 +37,19 @@ export async function POST(request: NextRequest) {
   }
 
   // Try AI structuring, fall back to manual fields from body
+  const hasManualFields = body.belief || body.invalidation_conditions?.length;
   let structured;
   try {
     structured = await structureAssumption(raw_input);
-  } catch {
-    // AI failed — use manually provided fields or defaults
+  } catch (err) {
+    if (!hasManualFields) {
+      // AI-only path with no manual fallback — surface the actual error
+      return NextResponse.json(
+        { error: (err as Error).message || "AI structuring failed" },
+        { status: 502 }
+      );
+    }
+    // Manual fields available — fall back gracefully
     structured = {
       belief: body.belief || "",
       causal_logic: body.causal_logic || "",
