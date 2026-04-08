@@ -34,26 +34,29 @@ export async function POST(request: NextRequest) {
   if (reviewError)
     return NextResponse.json({ error: reviewError.message }, { status: 500 });
 
-  // Update assumption status if invalidated
+  // Build assumption updates (status, confidence, cache invalidation)
+  const assumptionUpdates: Record<string, unknown> = {
+    analysis_cache: null,
+    analysis_cached_at: null,
+  };
+
   if (outcome === "invalidated") {
-    await supabase
-      .from("assumptions")
-      .update({ status: "invalidated" })
-      .eq("id", assumption_id);
+    assumptionUpdates.status = "invalidated";
   }
 
-  // Create confidence snapshot for review completion
   if (confidence !== undefined) {
+    assumptionUpdates.confidence = confidence;
     await supabase.from("confidence_snapshots").insert({
       assumption_id,
       confidence,
       trigger: "review_completed",
     });
-    await supabase
-      .from("assumptions")
-      .update({ confidence })
-      .eq("id", assumption_id);
   }
+
+  await supabase
+    .from("assumptions")
+    .update(assumptionUpdates)
+    .eq("id", assumption_id);
 
   return NextResponse.json({ success: true });
 }
