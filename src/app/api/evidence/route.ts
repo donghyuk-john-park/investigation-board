@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
     source_url: source_url || null,
     source_label: body.source_label || suggestion.source_label,
     body: body.body || suggestion.body,
+    related_condition_index: suggestion.related_condition_index ?? body.related_condition_index ?? null,
   };
 
   const { data: entry, error } = await supabase
@@ -72,6 +73,12 @@ export async function POST(request: NextRequest) {
       .update({ confidence: body.confidence })
       .eq("id", assumption_id);
   }
+
+  // Invalidate analysis cache so next dashboard load triggers fresh AI analysis
+  await supabase
+    .from("assumptions")
+    .update({ analysis_cache: null, analysis_cached_at: null })
+    .eq("id", assumption_id);
 
   // Trigger summary recompute (async, non-blocking)
   recomputeSummary(supabase, assumption_id, assumption).catch(() => {});

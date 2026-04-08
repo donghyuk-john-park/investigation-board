@@ -5,6 +5,27 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* v0.2 Thesis Health Dashboard — color tokens */
+:root {
+  --health-good: rgba(34, 197, 94, 0.15);
+  --health-good-border: rgba(34, 197, 94, 0.3);
+  --health-good-text: #4ade80;
+  --health-warn: rgba(234, 179, 8, 0.15);
+  --health-warn-border: rgba(234, 179, 8, 0.3);
+  --health-warn-text: #facc15;
+  --health-danger: rgba(239, 68, 68, 0.15);
+  --health-danger-border: rgba(239, 68, 68, 0.3);
+  --health-danger-text: #f87171;
+  --panel-health: rgba(34, 197, 94, 0.08);
+  --panel-health-border: rgba(34, 197, 94, 0.2);
+  --panel-counter: rgba(239, 68, 68, 0.08);
+  --panel-counter-border: rgba(239, 68, 68, 0.2);
+  --panel-missing: rgba(234, 179, 8, 0.08);
+  --panel-missing-border: rgba(234, 179, 8, 0.2);
+  --panel-shift: rgba(99, 102, 241, 0.08);
+  --panel-shift-border: rgba(99, 102, 241, 0.2);
+}
+
 /* Focus-visible ring for keyboard accessibility */
 *:focus-visible {
   outline: 2px solid oklch(0.65 0.2 265);

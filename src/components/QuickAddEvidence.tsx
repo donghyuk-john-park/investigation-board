@@ -62,25 +62,27 @@ export default function QuickAddEvidence({
   );
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Paste a URL or type a quick note..."
-        className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
-        disabled={loading}
-      />
-      <button
-        type="submit"
-        disabled={loading || !input.trim()}
-        className="px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-      >
-        {loading ? "..." : "+ Add"}
-      </button>
+    <div>
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Paste a URL or type a quick note..."
+          className="flex-1 px-3 py-2 text-sm bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 placeholder-gray-600 focus:border-indigo-500 focus:outline-none"
+          disabled={loading}
+        />
+        <button
+          type="submit"
+          disabled={loading || !input.trim()}
+          className="px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {loading ? "..." : "+ Add"}
+        </button>
+      </form>
       {error && (
-        <div className="absolute mt-12 text-xs text-red-400">{error}</div>
+        <p className="mt-2 text-xs text-red-400">{error}</p>
       )}
-    </form>
+    </div>
   );
 }
