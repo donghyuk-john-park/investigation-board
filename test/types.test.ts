@@ -19,6 +19,9 @@ describe("Type contracts", () => {
       raw_input: "I think oil will rise",
       ai_summary: null,
       ai_summary_updated_at: null,
+      analysis_cache: null,
+      analysis_cached_at: null,
+      is_seed: false,
       created_at: new Date().toISOString(),
     };
     expect(assumption.status).toBe("active");
