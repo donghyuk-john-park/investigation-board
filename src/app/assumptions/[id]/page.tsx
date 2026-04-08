@@ -241,7 +241,7 @@ function ThesisDashboardContent() {
             <span>/</span>
           </>
         ) : null}
-        <span className="text-gray-400 truncate">{assumption.belief.slice(0, 40)}...</span>
+        <span className="text-gray-400 truncate">{assumption.belief.length > 40 ? assumption.belief.slice(0, 40) + "..." : assumption.belief}</span>
       </div>
 
       {/* Hero Thesis */}
