@@ -105,6 +105,7 @@ function ThesisDashboardContent() {
   const fetchData = useCallback(async () => {
     try {
       const res = await fetch(`/api/assumptions/${id}`);
+      if (res.status === 401) throw new Error("unauthorized");
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setAssumption(data.assumption);
@@ -172,6 +173,16 @@ function ThesisDashboardContent() {
   }
 
   if (error || !assumption) {
+    if (error === "unauthorized") {
+      return (
+        <div className="text-center py-16">
+          <p className="text-gray-400 mb-2">You need to sign in to view this thesis.</p>
+          <a href="/auth/login" className="text-sm text-indigo-400 hover:text-indigo-300">
+            Sign in
+          </a>
+        </div>
+      );
+    }
     return (
       <div className="text-center py-16 text-red-400">
         {error || "Assumption not found"}
@@ -230,7 +241,7 @@ function ThesisDashboardContent() {
             <span>/</span>
           </>
         ) : null}
-        <span className="text-gray-400 truncate">{assumption.belief.slice(0, 40)}...</span>
+        <span className="text-gray-400 truncate">{assumption.belief.length > 40 ? assumption.belief.slice(0, 40) + "..." : assumption.belief}</span>
       </div>
 
       {/* Hero Thesis */}
