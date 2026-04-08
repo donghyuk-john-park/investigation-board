@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { THESIS_TEMPLATES, type ThesisTemplate } from "@/lib/templates";
 
 export default function NewAssumption() {
   const router = useRouter();
@@ -178,6 +179,38 @@ export default function NewAssumption() {
 
       {/* Manual creation */}
       <div className="space-y-4">
+        {/* Template Picker */}
+        <div>
+          <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1.5">
+            Start from template{" "}
+            <span className="text-gray-600 normal-case">(optional)</span>
+          </label>
+          <select
+            onChange={(e) => {
+              const template = THESIS_TEMPLATES.find(
+                (t: ThesisTemplate) => t.name === e.target.value
+              );
+              if (template) {
+                setBelief(template.belief);
+                setCausalLogic(template.causal_logic);
+                setInvalidationConditions(template.invalidation_conditions);
+                if (!rawInput) setRawInput(template.belief);
+              }
+            }}
+            defaultValue=""
+            className="w-full px-3 py-2 text-base bg-blue-950/30 border border-gray-700 rounded-md text-gray-200 focus:border-indigo-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
+          >
+            <option value="" disabled>
+              Choose a thesis template...
+            </option>
+            {THESIS_TEMPLATES.map((t: ThesisTemplate) => (
+              <option key={t.name} value={t.name}>
+                {t.category.charAt(0).toUpperCase() + t.category.slice(1)}: {t.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div>
           <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1.5">
             Belief
