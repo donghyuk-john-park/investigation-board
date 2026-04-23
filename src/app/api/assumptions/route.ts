@@ -1,22 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { structureAssumption } from "@/lib/ai";
+import { sortRelatedAssumptions } from "@/lib/related-assumptions";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { data, error } = await supabase
-    .from("assumptions")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const assetTags = request.nextUrl.searchParams
+    .get("asset_tags")
+    ?.split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean) ?? [];
+  const excludeId = request.nextUrl.searchParams.get("exclude_id");
+  const rawLimit = Number.parseInt(
+    request.nextUrl.searchParams.get("limit") ?? "",
+    10
+  );
+  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? rawLimit : 10;
+
+  let query = supabase.from("assumptions").select("*");
+
+  if (assetTags.length > 0) {
+    query = query.overlaps("asset_tags", assetTags);
+  }
+
+  if (excludeId) {
+    query = query.neq("id", excludeId);
+  }
+
+  const { data, error } = await query.order("created_at", { ascending: false });
 
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+
+  const assumptions = data || [];
+
+  if (assetTags.length > 0) {
+    return NextResponse.json(sortRelatedAssumptions(assumptions).slice(0, limit));
+  }
+
+  return NextResponse.json(assumptions);
 }
 
 export async function POST(request: NextRequest) {

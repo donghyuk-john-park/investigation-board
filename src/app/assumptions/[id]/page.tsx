@@ -7,6 +7,7 @@ import EvidenceTimeline from "@/components/EvidenceTimeline";
 import ConfidenceChart from "@/components/ConfidenceChart";
 import QuickAddEvidence from "@/components/QuickAddEvidence";
 import CrisisQuestion from "@/components/CrisisQuestion";
+import RelatedAssumptionsSection from "@/components/RelatedAssumptionsSection";
 import type {
   Assumption,
   EvidenceEntry,
@@ -139,21 +140,24 @@ function ThesisDashboardContent() {
   );
 
   const fetchRelated = useCallback(async () => {
-    if (!assumption?.asset_tags?.length) return;
+    if (!assumption?.asset_tags?.length) {
+      setRelatedAssumptions([]);
+      return;
+    }
+
     try {
-      const res = await fetch("/api/assumptions");
+      const params = new URLSearchParams({
+        asset_tags: assumption.asset_tags.join(","),
+        exclude_id: id,
+        limit: "10",
+      });
+      const res = await fetch(`/api/assumptions?${params.toString()}`);
       if (!res.ok) return;
-      const all: Assumption[] = await res.json();
-      const related = all
-        .filter(
-          (a) =>
-            a.id !== id &&
-            a.asset_tags?.some((tag) => assumption.asset_tags?.includes(tag))
-        )
-        .slice(0, 10);
+      const related: Assumption[] = await res.json();
       setRelatedAssumptions(related);
     } catch {
       // Non-critical
+      setRelatedAssumptions([]);
     }
   }, [id, assumption?.asset_tags]);
 
@@ -191,7 +195,6 @@ function ThesisDashboardContent() {
   }
 
   const isInvalidated = assumption.status === "invalidated";
-  const healthScore = analysis?.health?.score;
 
   function closeCrisisModal() {
     router.push(`/assumptions/${id}`);
@@ -433,6 +436,11 @@ function ThesisDashboardContent() {
         <ConfidenceChart snapshots={snapshots} />
       </div>
 
+      <RelatedAssumptionsSection
+        currentAssetTags={assumption.asset_tags}
+        assumptions={relatedAssumptions}
+      />
+
       {/* Evidence Log */}
       <div className="mb-4">
         <div className="text-xs text-gray-500 uppercase tracking-wide mb-3">
@@ -448,50 +456,6 @@ function ThesisDashboardContent() {
         </div>
       </div>
 
-      {/* Related Assumptions Strip */}
-      {relatedAssumptions.length > 0 && (
-        <div className="border border-gray-700 rounded-lg p-4 bg-gray-900">
-          <div className="text-xs text-gray-500 uppercase tracking-wide mb-2">
-            Related Assumptions (shared assets)
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {relatedAssumptions.map((ra) => {
-              const raHealth = ra.analysis_cache?.health?.score;
-              return (
-                <Link
-                  key={ra.id}
-                  href={`/assumptions/${ra.id}`}
-                  className={`flex items-center gap-2 px-3 py-2 border border-gray-700 rounded-lg text-xs whitespace-nowrap hover:border-indigo-500/50 transition-colors ${
-                    ra.status === "invalidated" ? "opacity-50" : ""
-                  }`}
-                >
-                  {raHealth != null && (
-                    <span
-                      className="font-bold"
-                      style={{
-                        color:
-                          raHealth > 6
-                            ? "var(--health-good-text)"
-                            : raHealth > 3
-                            ? "var(--health-warn-text)"
-                            : "var(--health-danger-text)",
-                      }}
-                    >
-                      {raHealth}
-                    </span>
-                  )}
-                  <span className="text-gray-400 max-w-48 truncate">
-                    {ra.belief}
-                  </span>
-                  {ra.status === "invalidated" && (
-                    <span className="text-red-400 text-[10px]">INVALIDATED</span>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
