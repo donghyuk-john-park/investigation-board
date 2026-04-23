@@ -4,6 +4,7 @@ import AssumptionCard from "@/components/AssumptionCard";
 import SeedDataBanner from "@/components/SeedDataBanner";
 import Link from "next/link";
 import type { Assumption } from "@/lib/types";
+import { getMissingSupabaseEnvVars, hasSupabaseEnv } from "@/lib/env";
 
 function groupByAssetTag(assumptions: Assumption[]) {
   const tagMap = new Map<string, Assumption[]>();
@@ -34,6 +35,24 @@ function groupByAssetTag(assumptions: Assumption[]) {
 }
 
 export default async function Home() {
+  if (!hasSupabaseEnv()) {
+    const missingVars = getMissingSupabaseEnvVars();
+
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <h1 className="text-2xl font-bold text-gray-100 mb-2">GNOSIS</h1>
+        <p className="text-gray-400 mb-3 max-w-xl">
+          Supabase environment variables are missing, so the app can boot but
+          cannot load data yet.
+        </p>
+        <p className="text-sm text-gray-500">
+          Add {missingVars.join(", ")} to `.env.local` and restart the dev
+          server.
+        </p>
+      </div>
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

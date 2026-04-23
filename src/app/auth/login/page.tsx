@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { getMissingSupabaseEnvVars, hasSupabaseEnv } from "@/lib/env";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  const supabaseReady = hasSupabaseEnv();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +43,20 @@ export default function LoginPage() {
         <p className="text-gray-500 text-sm">
           We sent a magic link to <strong className="text-gray-300">{email}</strong>.
           Click it to sign in.
+        </p>
+      </div>
+    );
+  }
+
+  if (!supabaseReady) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <h1 className="text-xl font-semibold text-gray-100 mb-2">
+          Supabase configuration required
+        </h1>
+        <p className="text-gray-500 text-sm max-w-md">
+          Add {getMissingSupabaseEnvVars().join(", ")} to `.env.local` before
+          using magic-link sign in.
         </p>
       </div>
     );
