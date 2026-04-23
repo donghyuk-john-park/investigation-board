@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title>Gnosis</title>
+  <rect width="512" height="512" rx="120" fill="#0f172a" />
+  <path
+    d="M365 180c-22-37-62-59-109-59-72 0-129 57-129 134s57 136 132 136c48 0 91-24 113-63l-47-25c-13 23-37 37-65 37-42 0-75-34-75-85 0-49 33-83 75-83 25 0 47 11 61 31l44-23Z"
+    fill="#818cf8"
+  />
+  <circle cx="352" cy="163" r="33" fill="#f59e0b" />
+</svg>
